@@ -1,0 +1,58 @@
+***********************************************************************************************
+Problem Statement:
+Implement all the file formats in Hive by using any publicly available data set of your choice
+***********************************************************************************************
+
+Get the dataset and store in HDFS
+hadoop fs -mkdir olympic_dataset
+hadoop fs -put /home/acadgild/Assignment-session6/olympix_data.csv olympic_dataset
+
+-----------------------------------------------------------------------------------------------
+(A) TEXTFILE
+
+hive> create table if not exists olympics (athlete String,age int,country String,year int,closingdate String,sport string,gold int,silver int,bronze int,total int) row format delimited fields terminated by '\t' stored as TEXTFILE;
+
+hive> describe olympic;
+
+hive>load data inpath '/user/acadgild/olympic_dataset' into table olympic;
+(Note: use local if data on local storage)
+
+hive> select count(*) from olympic;
+-----------------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------------
+(B) SEQUENCEFILE
+
+hive> create table if not exists olympic_sequencefile(athlete String,age int,country String,year int,closingdate String,sport string,gold int,silver int,bronze int,total int) row format delimited fields terminated by '\t' stored as sequencefile;
+
+hive> describe olympic_sequencefile;
+
+hive> INSERT OVERWRITE TABLE olympic_sequencefile SELECT * FROM olympic;
+
+hive> select athlete, country from olympic_sequencefile limit 10;
+-----------------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------------
+(C) RCFILE
+
+hive> create table if not exists olympic_rcfile(athlete String,age int,country String,year int,closingdate String,sport string,gold int,silver int,bronze int,total int) row format delimited fields terminated by '\t' stored as rcfile;
+
+hive> describe olympic_rcfile;
+
+hive> INSERT OVERWRITE TABLE olympic_rcfile SELECT * FROM olympic;
+
+hive> select athlete, country from olympic_rcfile limit 10;
+-----------------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------------
+(D) ORCFILE
+
+hive> create table olympic_orcfile(athlete String,age int,country String,year int,closingdate String,sport string,gold int,silver int,bronze int,total int) row format delimited fields terminated by '\t' stored as orcfile;
+
+hive> describe olympic_orcfile;
+
+hive> INSERT OVERWRITE TABLE olympic_orcfile SELECT * FROM olympic;
+
+hive> select athlete, country from olympic_orcfile;
+-----------------------------------------------------------------------------------------------
+
